@@ -3,11 +3,6 @@ import { LandingPageFooter } from '../../components/LandingPage/LandingPageFoote
 import { LandingPageNavbar } from '../../components/LandingPage/LandingPageNavbar';
 import { LandingPageTop } from '../../components/LandingPage/LandingPageTop';
 
-interface Props {
-  onLogin(): void;
-  onSignUp(): void;
-}
-
 const LandingPage = () => {
   return (
     <>
