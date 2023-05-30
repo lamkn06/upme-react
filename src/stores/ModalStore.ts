@@ -1,26 +1,33 @@
-import { makeAutoObservable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
-interface Modal {
-  open: boolean;
-  body: JSX.Element | null;
-}
+export type Modal = 'signUpModal' | 'signInModal' | '';
 
 export default class ModalStore {
-  modal: Modal = {
-    open: false,
-    body: null,
-  };
+  @observable modals: Modal[] = [];
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this);
   }
-  openModal = (content: JSX.Element) => {
-    this.modal.open = true;
-    this.modal.body = content;
-  };
 
-  closeModal = () => {
-    this.modal.open = false;
-    this.modal.body = null;
-  };
+  @action.bound openModal(modal: Modal): void {
+    if (modal === '') {
+      this.modals = [];
+      return;
+    }
+
+    // need previous state
+    this.modals = [modal];
+  }
+
+  @action.bound closeModal(modal: Modal): void {
+    this.modals = this.modals.filter((m) => m !== modal);
+  }
+
+  @computed get isSignInModalOpen(): boolean {
+    return this.modals.includes('signInModal');
+  }
+
+  @computed get isSignUpModalOpen(): boolean {
+    return this.modals.includes('signUpModal');
+  }
 }

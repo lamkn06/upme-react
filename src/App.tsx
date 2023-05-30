@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { ModalWrapper } from './components/ModalWrapper';
 import i18n from './i18n';
 import { Provider } from './rootStore';
 import { router } from './routes';
@@ -28,6 +29,7 @@ const App = () => {
               ))}
               <Route path="*" element={<Navigate to={'/'} replace />} />
             </Routes>
+            <ModalWrapper />
           </Suspense>
         </Provider>
       </ChakraProvider>
