@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite';
+
 import { LandingPageContent } from '../../components/LandingPage/LandingPageContent';
 import { LandingPageFooter } from '../../components/LandingPage/LandingPageFooter';
 import { LandingPageNavbar } from '../../components/LandingPage/LandingPageNavbar';
@@ -14,4 +16,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default observer(LandingPage);

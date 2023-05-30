@@ -7,17 +7,66 @@ import {
   Link,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
+import { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { ReactComponent as Logo } from '../../assets/icons/logo.svg';
+import { SelectLanguage } from '../SelectLanguage';
 
 interface Props {
   onLogin(): void;
   onSignUp(): void;
 }
-export const LandingPageNavbar = (props: Props) => {
+
+const selectStyles = {
+  control: (provided: HTMLSelectElement) => {
+    return {
+      ...provided,
+      width: 121,
+      height: 48,
+      background: 'transparent',
+      color: '#06DCFF',
+      borderColor: '#06DCFF',
+      borderRadius: '0px',
+      boxShadow: 'none',
+      '&:hover': {
+        borderColor: '#06DCFF',
+      },
+      cursor: 'pointer',
+    };
+  },
+  indicatorSeparator: (provided: HTMLSelectElement) => ({
+    ...provided,
+    display: 'none',
+  }),
+  option: (provided: HTMLSelectElement) => ({
+    ...provided,
+    backgroundColor: 'none',
+    color: '#3F4647',
+    ':hover': {
+      color: '#06DCFF',
+      cursor: 'pointer',
+    },
+  }),
+  singleValue: (base: HTMLSelectElement) => ({
+    ...base,
+    padding: '0 5px',
+    color: '#06DCFF',
+    fontWeight: 600,
+  }),
+  indicatorsContainer: (provided: HTMLSelectElement) => ({
+    ...provided,
+    svg: {
+      color: '#06DCFF',
+    },
+  }),
+} as CSSProperties;
+
+export const LandingPageNavbar = observer((props: Props) => {
   const { t, i18n } = useTranslation();
+
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   return (
     <Box as="section" position={'sticky'} top={0} zIndex={10}>
@@ -62,9 +111,10 @@ export const LandingPageNavbar = (props: Props) => {
             ) : (
               <></>
             )}
+            <SelectLanguage selectStyles={selectStyles} />
           </HStack>
         </Container>
       </Box>
     </Box>
   );
-};
+});
