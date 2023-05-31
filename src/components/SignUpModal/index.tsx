@@ -25,6 +25,8 @@ import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as EyeSlashIcon } from '../../assets/icons/u_eye-slash.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/u_times.svg';
 import { useRootStore } from '../../rootStore';
+import { SocialFacebookLogin } from '../SocialFacebookLogin';
+import { SocialGoogleLogin } from '../SocialGoogleLogin';
 
 export const SignUpModal = observer(() => {
   const { modalStore } = useRootStore();
@@ -46,7 +48,7 @@ export const SignUpModal = observer(() => {
         isCentered
         scrollBehavior={'inside'}
         isOpen={isSignUpModalOpen}
-        onClose={undefined}
+        onClose={() => openModal('')}
       >
         <ModalOverlay />
         <ModalContent rounded={'2px'} maxW={'464px'} mx={'8px'}>
@@ -63,7 +65,6 @@ export const SignUpModal = observer(() => {
               <Heading variant={'h5'}>
                 {t('Create an account to save your progress')}
               </Heading>
-
               <Flex
                 align={'center'}
                 mt={'16px'}
@@ -100,7 +101,6 @@ export const SignUpModal = observer(() => {
                   <FormErrorMessage>{errors.email.message}</FormErrorMessage>
                 )} */}
               </FormControl>
-
               <FormControl isRequired mt={'24px'} mb={'32px'}>
                 <FormLabel mb={'4px'}>{t('Password')}</FormLabel>
 
@@ -132,7 +132,6 @@ export const SignUpModal = observer(() => {
                   <FormErrorMessage>{errors.password.message}</FormErrorMessage>
                 )} */}
               </FormControl>
-
               <Button
                 w={'100%'}
                 variant={'primary'}
@@ -141,6 +140,8 @@ export const SignUpModal = observer(() => {
               >
                 {t('Create your account free')}
               </Button>
+              <SocialGoogleLogin />
+              <SocialFacebookLogin />
 
               <Box mt={'16px'} color={'mono1'} fontSize={'lg'}>
                 <Trans>

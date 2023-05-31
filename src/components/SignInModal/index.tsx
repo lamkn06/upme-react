@@ -23,6 +23,8 @@ import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as EyeSlashIcon } from '../../assets/icons/u_eye-slash.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/u_times.svg';
 import { useRootStore } from '../../rootStore';
+import { SocialFacebookLogin } from '../SocialFacebookLogin';
+import { SocialGoogleLogin } from '../SocialGoogleLogin';
 
 export const SignInModal = observer(() => {
   const { modalStore } = useRootStore();
@@ -155,47 +157,8 @@ export const SignInModal = observer(() => {
               {t('Login Now')}
             </Button>
 
-            {/* <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-              render={({ disabled, onClick }) => (
-                <Button
-                  isDisabled={disabled}
-                  variant={'secondary'}
-                  textTransform={'none'}
-                  fontWeight={'normal'}
-                  h={'48px'}
-                  mt={'16px'}
-                  onClick={onClick}
-                >
-                  <Image src={GoogleIcon} boxSize={'24px'} mr={'12px'} />
-                  Google
-                </Button>
-              )}
-              onSuccess={handleSignInWithGoogleOnSuccess}
-            />
-
-            <FacebookLogin
-              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-              autoLoad={false}
-              fields="name,email,picture"
-              callback={handleSignInWithFacebook}
-              render={({ isDisabled, isProcessing, isSdkLoaded, onClick }) => (
-                <Button
-                  isFullWidth
-                  isDisabled={isDisabled}
-                  isLoading={isProcessing || !isSdkLoaded}
-                  variant={'secondary'}
-                  textTransform={'none'}
-                  fontWeight={'normal'}
-                  h={'48px'}
-                  mt={'16px'}
-                  onClick={onClick}
-                >
-                  <Image src={FacebookIcon} boxSize={'24px'} mr={'12px'} />
-                  Facebook
-                </Button>
-              )}
-            /> */}
+            <SocialGoogleLogin />
+            <SocialFacebookLogin />
           </ModalBody>
         </ModalContent>
       </Modal>
