@@ -93,7 +93,7 @@ export const LandingPageNavbar = observer((props: Props) => {
 
                   <Link
                     as={RouterLink}
-                    to={`/edit-profile`}
+                    to={`/profile`}
                     _hover={{
                       textDecoration: 'none',
                     }}

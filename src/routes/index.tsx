@@ -1,39 +1,17 @@
 import { lazy } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
 
 // Unauthorized page
 const LandingPage = lazy(() => import('../pages/LandingPage'));
+const ProfilePage = lazy(() => import('../pages/ProfilePage'));
 
-interface RouteProp {
-  name: string;
-  key: string;
-  path?: string;
-  component?: React.ReactElement;
-  redirect?: string;
-  routes?: {
-    name: string;
-    key: string;
-    path: string;
-    redirect?: string;
-    component: React.ReactElement;
-  }[];
-}
-
-export const routes: RouteProp[] = [
+export const router = createBrowserRouter([
   {
     path: '/',
-    name: 'Landing Page',
-    key: 'landing-page',
-    component: <LandingPage />,
+    element: <LandingPage />,
   },
-];
-
-export const router: Omit<RouteProp, 'routes'>[] = routes.reduce(
-  (acc: any, { routes, ...rest }) => {
-    acc = [...acc, rest];
-    if (Array.isArray(routes)) {
-      acc = [...acc, ...routes];
-    }
-    return acc;
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
-  [],
-);
+]);

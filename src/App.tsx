@@ -1,11 +1,11 @@
-import './App.css';
 import '@fontsource/roboto';
+import './App.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { Suspense } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
 import { ModalWrapper } from './components/ModalWrapper';
 import i18n from './i18n';
@@ -19,16 +19,7 @@ const App = () => {
       <ChakraProvider theme={theme}>
         <Provider>
           <Suspense fallback={<></>}>
-            <Routes>
-              {router.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={route.component}
-                />
-              ))}
-              <Route path="*" element={<Navigate to={'/'} replace />} />
-            </Routes>
+            <RouterProvider router={router} fallbackElement={<></>} />
             <ModalWrapper />
           </Suspense>
         </Provider>

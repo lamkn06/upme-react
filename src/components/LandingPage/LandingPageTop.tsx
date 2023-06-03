@@ -95,7 +95,7 @@ export const LandingPageTop = (props: Props) => {
           </Flex>
           <Link
             as={RouterLink}
-            to={`/edit-profile`}
+            to={`/profile`}
             _hover={{
               textDecoration: 'none',
             }}

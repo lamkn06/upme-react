@@ -125,7 +125,7 @@ export const LandingPageContent = (props: Props) => {
                     </Text>
                     <Link
                       as={RouterLink}
-                      to={`/edit-profile`}
+                      to={`/profile`}
                       _hover={{
                         textDecoration: 'none',
                       }}

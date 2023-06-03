@@ -69,7 +69,7 @@ export const LandingPageFooter = (props: Props) => {
             </HStack>
             <Link
               as={RouterLink}
-              to={`/edit-profile`}
+              to={`/profile`}
               _hover={{
                 textDecoration: 'none',
               }}
