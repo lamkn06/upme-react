@@ -19,8 +19,11 @@ const LandingPage = () => {
         onLogin={() => modalStore.openModal('signInModal')}
         onSignUp={() => modalStore.openModal('signUpModal')}
       />
-      <LandingPageContent onLogin={undefined} />
-      <LandingPageFooter onLogin={undefined} onSignUp={undefined} />
+      <LandingPageContent onLogin={() => modalStore.openModal('signInModal')} />
+      <LandingPageFooter
+        onLogin={() => modalStore.openModal('signInModal')}
+        onSignUp={() => modalStore.openModal('signUpModal')}
+      />
     </>
   );
 };

@@ -1,10 +1,16 @@
+import { Flex } from '@chakra-ui/react';
+
+import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 
 const MainLayout = (props: any) => {
   return (
     <>
       <Sidebar />
-      {props.children}
+      <Flex minH={'100vh'} maxW={'100vw'}>
+        <Navbar />
+        {props.children}
+      </Flex>
     </>
   );
 };

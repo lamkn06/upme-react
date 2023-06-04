@@ -7,7 +7,6 @@ import { Suspense } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { RouterProvider } from 'react-router-dom';
 
-import { ModalWrapper } from './components/ModalWrapper';
 import i18n from './i18n';
 import { Provider } from './rootStore';
 import { router } from './routes';
@@ -20,7 +19,6 @@ const App = () => {
         <Provider>
           <Suspense fallback={<></>}>
             <RouterProvider router={router} fallbackElement={<></>} />
-            <ModalWrapper />
           </Suspense>
         </Provider>
       </ChakraProvider>

@@ -1,17 +1,32 @@
-import { lazy } from 'react';
+import loadable from '@loadable/component';
 import { createBrowserRouter } from 'react-router-dom';
 
-// Unauthorized page
-const LandingPage = lazy(() => import('../pages/LandingPage'));
-const ProfilePage = lazy(() => import('../pages/ProfilePage'));
+const LandingPage = loadable(() => import('../pages/LandingPage'));
+const ProfilePage = loadable(() => import('../pages/ProfilePage'));
+const UpmePolicy = loadable(() => import('../pages/UpmeLegal/UpmePolicy'));
+const UpmeTerms = loadable(() => import('../pages/UpmeLegal/UpmeTerms'));
+const Root = loadable(() => import('../pages/Root'));
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <LandingPage />,
-  },
-  {
-    path: '/profile',
-    element: <ProfilePage />,
+    element: <Root />,
+    children: [
+      {
+        path: '/',
+        element: <LandingPage />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/legal/terms',
+        element: <UpmeTerms />,
+      },
+      {
+        path: '/legal/privacy-policy',
+        element: <UpmePolicy />,
+      },
+    ],
   },
 ]);
