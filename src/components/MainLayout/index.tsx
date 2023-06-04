@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 
+import Footer from '../Footer';
 import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 
@@ -15,6 +16,7 @@ const MainLayout = (props: any) => {
             {props.children}
           </Flex>
         </Flex>
+        <Footer />
       </Flex>
     </Flex>
   );
