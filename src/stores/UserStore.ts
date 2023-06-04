@@ -23,6 +23,7 @@ export default class UserStore {
   }
 
   @action.bound fetch = flow(function* (this: UserStore) {
+    console.log('111', this.token);
     if (!this.token) return;
     this.loading = true;
     try {
@@ -42,5 +43,10 @@ export default class UserStore {
   @action.bound signOut(this: UserStore) {
     this.isAuthenticated = false;
     localStorage.removeItem('token');
+  }
+
+  @action.bound setToken(token: string) {
+    localStorage.setItem('token', token);
+    this.token = token;
   }
 }

@@ -15,8 +15,7 @@ export default class AuthStore {
   ) {
     const { email, password } = payload;
     try {
-      const response = yield loginByEmail(email, password);
-      localStorage.setItem('token', response.token);
+      return yield loginByEmail(email, password);
     } catch (error) {
       throw error;
     }
