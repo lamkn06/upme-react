@@ -10,8 +10,10 @@ const MainLayout = (props: any) => {
       <Sidebar />
       <Flex flex={1} flexDirection={'column'}>
         <Navbar />
-        <Flex flex={1} flexDirection={'column'}>
-          {props.children}
+        <Flex flex={1} justifyContent={'center'} padding={'65px 0'}>
+          <Flex flex={1} flexDirection={'column'} maxW={730}>
+            {props.children}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

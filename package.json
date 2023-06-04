@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.1",
     "@greatsumini/react-facebook-login": "^3.3.3",
+    "@hookform/resolvers": "^3.1.0",
     "@leecheuk/react-google-login": "^5.4.1",
     "@loadable/component": "^5.15.3",
     "@tabler/icons-react": "^2.19.0",
