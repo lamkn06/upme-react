@@ -15,12 +15,14 @@ export default class MasterStore {
   ];
   @observable clientLanguage = 'en';
 
+  @observable isSideBarOpen = true;
+
   constructor() {
-    this.fetch();
+    this.fetchIp();
     makeObservable(this);
   }
 
-  @action.bound fetch = flow(function* (this: MasterStore) {
+  @action.bound fetchIp = flow(function* (this: MasterStore) {
     try {
       const { data } = yield axios.get('https://geolocation-db.com/json/');
       const lang = LangsKey[data.country_code as string];
@@ -37,6 +39,10 @@ export default class MasterStore {
 
   @action.bound setClientCountry(language: string) {
     this.clientLanguage = language;
+  }
+
+  @action.bound setSideBarOpen(isSideBarOpen: boolean) {
+    this.isSideBarOpen = isSideBarOpen;
   }
 
   @computed get currentLanguage() {

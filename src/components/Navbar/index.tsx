@@ -10,10 +10,12 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { domAnimation, LazyMotion, m } from 'framer-motion';
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 
+import { ReactComponent as MenuIcon } from '../../assets/icons/u_align.svg';
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
+import { ReactComponent as HamburgerLeftIcon } from '../../assets/icons/u_left-indent.svg';
 import emptyPicture from '../../assets/images/avatar-placeholder.svg';
 import { useRootStore } from '../../rootStore';
 import { SelectLanguage } from '../SelectLanguage';
@@ -22,9 +24,8 @@ const MotionFlex = m(Flex);
 
 const Navbar = () => {
   const { t } = useTranslation();
-  const { modalStore } = useRootStore();
-
-  const [isUserSettingModalOpen, setUserSettingModalOpen] = useState(false);
+  const { masterStore, modalStore } = useRootStore();
+  const { isSideBarOpen, setSideBarOpen } = masterStore;
 
   return (
     <>
@@ -38,13 +39,14 @@ const Navbar = () => {
           h={'64px'}
           pl={'16px'}
           pr={'40px'}
-          pos={'fixed'}
-          top={0}
-          right={0}
-          zIndex={2}
         >
-          <Box boxSize={'24px'} cursor={'pointer'} fill={'black'} />
-
+          <Box
+            as={isSideBarOpen ? HamburgerLeftIcon : MenuIcon}
+            boxSize={'24px'}
+            cursor={'pointer'}
+            fill={'black'}
+            onClick={() => setSideBarOpen(!isSideBarOpen)}
+          />
           <Spacer />
 
           {false ? (
@@ -62,9 +64,7 @@ const Navbar = () => {
                   />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => setUserSettingModalOpen(true)}>
-                    {t('Settings')}
-                  </MenuItem>
+                  <MenuItem>{t('Settings')}</MenuItem>
                   {/* <MenuItem
                 onClick={() => {
                   handleLinkToBusiness({ email });
@@ -127,4 +127,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default observer(Navbar);

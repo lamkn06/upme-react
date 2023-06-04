@@ -1,18 +1,21 @@
 import { Flex } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 
 import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 
 const MainLayout = (props: any) => {
   return (
-    <>
+    <Flex minH={'100vh'} w={'100vw'}>
       <Sidebar />
-      <Flex minH={'100vh'} maxW={'100vw'}>
+      <Flex flex={1} flexDirection={'column'}>
         <Navbar />
-        {props.children}
+        <Flex flex={1} flexDirection={'column'}>
+          {props.children}
+        </Flex>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
-export default MainLayout;
+export default observer(MainLayout);
