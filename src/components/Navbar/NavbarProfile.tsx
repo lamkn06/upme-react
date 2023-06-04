@@ -2,9 +2,15 @@ import { Image, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import emptyPicture from '../../assets/images/avatar-placeholder.svg';
+import { useRootStore } from '../../rootStore';
 
 export const NavbarProfile = () => {
   const { t } = useTranslation();
+  const { userStore } = useRootStore();
+
+  const handleSignOut = () => {
+    userStore.signOut();
+  };
 
   return (
     <Menu>
@@ -21,6 +27,7 @@ export const NavbarProfile = () => {
       </MenuButton>
       <MenuList>
         <MenuItem>{t('Settings')}</MenuItem>
+        <MenuItem onClick={handleSignOut}>{t('Sign out')}</MenuItem>
       </MenuList>
     </Menu>
   );

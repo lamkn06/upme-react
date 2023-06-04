@@ -4,6 +4,7 @@ import {
   FormLabel,
   Text,
 } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +22,7 @@ interface Props {
   render: (props: any) => JSX.Element;
 }
 
-export const FormController = (props: Props) => {
+export const FormController = observer((props: Props) => {
   const { t } = useTranslation();
 
   const { label, isRequired, errors, control, name, defaultValue } = props;
@@ -40,4 +41,4 @@ export const FormController = (props: Props) => {
       </FormErrorMessage>
     </FormControl>
   );
-};
+});

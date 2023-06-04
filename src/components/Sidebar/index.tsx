@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Logo from '../../assets/images/logo.svg';
 import { useRootStore } from '../../rootStore';
 import { AvatarHolder } from './AvatarHolder';
+import MenuItems from './MenuItem';
 import { SidebarFollow } from './SidebarFollow';
 import { SidebarPoint } from './SidebarPoint';
 
@@ -61,6 +62,8 @@ const Sidebar = () => {
           <SidebarPoint />
           <SidebarFollow />
         </MotionBox>
+
+        <MenuItems />
       </MotionFlex>
     </LazyMotion>
   );

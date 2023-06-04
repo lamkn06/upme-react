@@ -35,12 +35,12 @@ export const SignUpModal = observer(() => {
   const [isPasswordType, setPasswordType] = useState(false);
 
   const { t } = useTranslation();
+  const { register, reset } = useForm();
 
   const handleOnClose = () => {
+    reset();
     openModal('');
   };
-
-  const { register } = useForm();
 
   return (
     <>

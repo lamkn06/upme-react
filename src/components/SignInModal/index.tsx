@@ -17,6 +17,7 @@ import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as EyeSlashIcon } from '../../assets/icons/u_eye-slash.svg';
@@ -29,26 +30,24 @@ import { SocialGoogleLogin } from '../SocialGoogleLogin';
 import { useHookForm } from './useHookForm';
 
 export const SignInModal = observer(() => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [store] = useState(() => new AuthStore());
 
-  const { modalStore } = useRootStore();
+  const { modalStore, userStore } = useRootStore();
   const { isSignInModalOpen, openModal } = modalStore;
 
   const [isPasswordType, setPasswordType] = useState(false);
 
-  const { t } = useTranslation();
-
-  const handleOnClose = () => {
-    openModal('');
-  };
-
   const { validationSchema } = useHookForm(t);
-
   const {
     handleSubmit,
     control,
     formState: { errors, isValid, isSubmitting },
     setError,
+    reset,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -58,10 +57,21 @@ export const SignInModal = observer(() => {
     resolver: yupResolver(validationSchema),
   });
 
+  const handleOnClose = () => {
+    reset();
+    openModal('');
+  };
+
   const onSubmit = async (data) => {
     try {
       await store.loginByEmail(data);
       openModal('');
+      await userStore.fetch();
+      if (location.pathname !== '/') {
+        return;
+      }
+
+      navigate('/profile');
     } catch (error) {
       setError('email', { message: 'Your email or password is incorrect' });
     }

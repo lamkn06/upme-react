@@ -7,7 +7,13 @@ export default class UserStore {
   @observable loading = false;
   @observable isAuthenticated = false;
 
-  @observable profile: UserProfile = null;
+  @observable profile: UserProfile = {
+    displayName: '',
+    email: '',
+    fullName: '',
+    id: '',
+    profilePicture: '',
+  };
   @observable setting: UserSetting = null;
   @observable token = localStorage.getItem('token');
 
@@ -32,4 +38,9 @@ export default class UserStore {
       this.loading = false;
     }
   });
+
+  @action.bound signOut(this: UserStore) {
+    this.isAuthenticated = false;
+    localStorage.removeItem('token');
+  }
 }
