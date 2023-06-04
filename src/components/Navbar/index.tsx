@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Spacer,
-} from '@chakra-ui/react';
+import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
 import { domAnimation, LazyMotion, m } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
@@ -16,16 +6,17 @@ import { useTranslation } from 'react-i18next';
 import { ReactComponent as MenuIcon } from '../../assets/icons/u_align.svg';
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as HamburgerLeftIcon } from '../../assets/icons/u_left-indent.svg';
-import emptyPicture from '../../assets/images/avatar-placeholder.svg';
 import { useRootStore } from '../../rootStore';
 import { SelectLanguage } from '../SelectLanguage';
+import { NavbarProfile } from './NavbarProfile';
 
 const MotionFlex = m(Flex);
 
 const Navbar = () => {
   const { t } = useTranslation();
-  const { masterStore, modalStore } = useRootStore();
+  const { masterStore, modalStore, userStore } = useRootStore();
   const { isSideBarOpen, setSideBarOpen } = masterStore;
+  const { loading, isAuthenticated } = userStore;
 
   return (
     <>
@@ -44,66 +35,42 @@ const Navbar = () => {
             as={isSideBarOpen ? HamburgerLeftIcon : MenuIcon}
             boxSize={'24px'}
             cursor={'pointer'}
+            zIndex={99}
             fill={'black'}
             onClick={() => setSideBarOpen(!isSideBarOpen)}
           />
           <Spacer />
 
-          {false ? (
+          {!loading && (
             <>
-              <Menu>
-                <MenuButton>
-                  <Image
-                    border={'1px solid #fff'}
-                    boxShadow={'0px 0px 0px 2px #06DCFF'}
-                    borderRadius={'full'}
-                    boxSize={'38px'}
-                    src={emptyPicture}
-                    mr={'24px'}
-                    cursor={'pointer'}
-                  />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>{t('Settings')}</MenuItem>
-                  {/* <MenuItem
-                onClick={() => {
-                  handleLinkToBusiness({ email });
-                }}
-              >
-                {t("Upme Business")}
-              </MenuItem> */}
-                  {/* <MenuItem onClick={() => setQrCodeModalOpen(true)}>
-                    {t('QR Code')}
-                  </MenuItem>
-                  <MenuItem onClick={handleSignOut}>{t('Sign out')}</MenuItem> */}
-                </MenuList>
-              </Menu>
-              {/* {flags.notification && <Notification />} */}
-            </>
-          ) : (
-            <>
-              <Button
-                variant={'ghost'}
-                mr={'8px'}
-                _focus={{}}
-                _hover={{
-                  bg: '#F8F8F9',
-                  color: '#06DCFF',
-                }}
-                onClick={() => modalStore.openModal('signInModal')}
-              >
-                {t('SignIn')}
-              </Button>
+              {isAuthenticated ? (
+                <NavbarProfile />
+              ) : (
+                <>
+                  <Button
+                    variant={'ghost'}
+                    mr={'8px'}
+                    _focus={{}}
+                    _hover={{
+                      bg: '#F8F8F9',
+                      color: '#06DCFF',
+                    }}
+                    onClick={() => modalStore.openModal('signInModal')}
+                  >
+                    {t('SignIn')}
+                  </Button>
 
-              <Button
-                variant={'primary'}
-                mr={'24px'}
-                minW={'138px'}
-                _focus={{}}
-                onClick={() => modalStore.openModal('signUpModal')}
-              >
-                {t('SignUp')}
-              </Button>
+                  <Button
+                    variant={'primary'}
+                    mr={'24px'}
+                    minW={'138px'}
+                    _focus={{}}
+                    onClick={() => modalStore.openModal('signUpModal')}
+                  >
+                    {t('SignUp')}
+                  </Button>
+                </>
+              )}
             </>
           )}
 
@@ -111,7 +78,7 @@ const Navbar = () => {
             <SelectLanguage />
           </Button>
 
-          {false && (
+          {isAuthenticated && (
             <Button
               leftIcon={<EyeIcon fill={'black'} />}
               background={'transparent'}

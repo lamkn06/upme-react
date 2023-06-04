@@ -1,4 +1,9 @@
-import { FormControl, FormErrorMessage, Text } from '@chakra-ui/react';
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Text,
+} from '@chakra-ui/react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -9,6 +14,7 @@ interface Props {
   control: Control<any, any>;
   name: string;
 
+  label?: string;
   isRequired?: boolean;
   defaultValue?: string | number;
 
@@ -18,10 +24,11 @@ interface Props {
 export const FormController = (props: Props) => {
   const { t } = useTranslation();
 
-  const { isRequired, errors, control, name, defaultValue } = props;
+  const { label, isRequired, errors, control, name, defaultValue } = props;
 
   return (
     <FormControl isRequired={isRequired} isInvalid={!!errors[name]}>
+      {label && <FormLabel mb={'4px'}>{t(label)}</FormLabel>}
       <Controller
         render={({ field }) => props.render(field)}
         control={control}

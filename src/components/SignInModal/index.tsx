@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Input,
   InputGroup,
@@ -14,6 +12,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,11 +21,16 @@ import { useTranslation } from 'react-i18next';
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as EyeSlashIcon } from '../../assets/icons/u_eye-slash.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/u_times.svg';
+import { FormController } from '../../commons/FormController';
 import { useRootStore } from '../../rootStore';
+import AuthStore from '../../stores/AuthStore';
 import { SocialFacebookLogin } from '../SocialFacebookLogin';
 import { SocialGoogleLogin } from '../SocialGoogleLogin';
+import { useHookForm } from './useHookForm';
 
 export const SignInModal = observer(() => {
+  const [store] = useState(() => new AuthStore());
+
   const { modalStore } = useRootStore();
   const { isSignInModalOpen, openModal } = modalStore;
 
@@ -38,7 +42,30 @@ export const SignInModal = observer(() => {
     openModal('');
   };
 
-  const { register } = useForm();
+  const { validationSchema } = useHookForm(t);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting },
+    setError,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      await store.loginByEmail(data);
+      openModal('');
+    } catch (error) {
+      setError('email', { message: 'Your email or password is incorrect' });
+    }
+  };
 
   return (
     <>
@@ -80,83 +107,63 @@ export const SignInModal = observer(() => {
                 {t('Create Account')}
               </Button>
             </Flex>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box mt={'32px'}>
+                <FormController
+                  isRequired
+                  label="Email"
+                  errors={errors}
+                  control={control}
+                  name={'email'}
+                  render={(field) => <Input {...field} />}
+                />
+              </Box>
+              <Box mt={'24px'}>
+                <FormController
+                  isRequired
+                  label="Password"
+                  errors={errors}
+                  control={control}
+                  name={'password'}
+                  render={(field) => (
+                    <>
+                      <InputGroup>
+                        <Input
+                          {...field}
+                          type={isPasswordType ? 'text' : 'password'}
+                          onKeyPress={(event) => {
+                            if (event.key === 'Enter') {
+                              handleSubmit(onSubmit)();
+                            }
+                          }}
+                        />
 
-            <FormControl isRequired mt={'32px'}>
-              <FormLabel mb={'4px'}>{t('Email Address')}</FormLabel>
-
-              <Input
-                {...register('email', {
-                  required: t('Please input a valid email format'),
-                  pattern: {
-                    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-                    message: t('Please input a valid email format'),
-                  },
-                })}
-                type="email"
-              />
-
-              {/* {errors.email && (
-                <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-              )} */}
-            </FormControl>
-
-            <FormControl isRequired mt={'24px'} mb={'24px'}>
-              <FormLabel mb={'4px'} display={'inline-block'}>
-                {t('Password')}
-              </FormLabel>
+                        <InputRightElement
+                          children={
+                            <Box
+                              as={isPasswordType ? EyeIcon : EyeSlashIcon}
+                              cursor={'pointer'}
+                              fill={'#3F4647'}
+                              onClick={() => setPasswordType(!isPasswordType)}
+                            />
+                          }
+                        />
+                      </InputGroup>
+                    </>
+                  )}
+                />
+              </Box>
               <Button
-                pos={'relative'}
-                display={'inline-block'}
-                float={'right'}
-                variant={'unstyled'}
-                h={'auto'}
-                mt={'6px'}
-                ml={'auto'}
-                size={'sm'}
-                onClick={handleOnClose}
+                mt={'24px'}
+                variant={'primary'}
+                w={'100%'}
+                h={'48px'}
+                type="submit"
+                isDisabled={!isValid || isSubmitting}
               >
-                {t('Forgot Password?')}
+                {t('Login Now')}
               </Button>
-              <InputGroup>
-                <Input
-                  {...register('password', {
-                    required: t('Password cannot be empty'),
-                  })}
-                  type={isPasswordType ? 'text' : 'password'}
-                  onKeyPress={(event) => {
-                    if (event.key === 'Enter') {
-                      undefined;
-                      //  handleSubmit(onSubmit)();
-                    }
-                  }}
-                />
-
-                <InputRightElement
-                  children={
-                    <Box
-                      as={isPasswordType ? EyeIcon : EyeSlashIcon}
-                      cursor={'pointer'}
-                      fill={'#3F4647'}
-                      onClick={() => setPasswordType(!isPasswordType)}
-                    />
-                  }
-                />
-              </InputGroup>
-              {/* 
-              {errors.password && (
-                <FormErrorMessage>{errors.password.message}</FormErrorMessage>
-              )} */}
-            </FormControl>
-
-            <Button
-              variant={'primary'}
-              w={'100%'}
-              h={'48px'}
-              onClick={undefined}
-            >
-              {t('Login Now')}
-            </Button>
-
+            </form>
             <SocialGoogleLogin />
             <SocialFacebookLogin />
           </ModalBody>

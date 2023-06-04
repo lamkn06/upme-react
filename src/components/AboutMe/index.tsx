@@ -29,7 +29,6 @@ const AboutMe = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  console.log(errors);
   const onSubmit = (data) => console.log(data);
   const aboutMe = watch();
 
@@ -74,18 +73,17 @@ const AboutMe = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={[1, 2]} spacing={'16px'} mb={'16px'}>
           <FormController
+            label="Full name"
             errors={errors}
             control={control}
             name={'fullName'}
-            render={(field) => {
-              console.log(field);
-              return (
-                <Input {...field} placeholder={'eg. John '} maxLength={46} />
-              );
-            }}
+            render={(field) => (
+              <Input {...field} placeholder={'eg. John '} maxLength={46} />
+            )}
           />
 
           <FormController
+            label="Position"
             errors={errors}
             control={control}
             name={'position'}
@@ -99,6 +97,7 @@ const AboutMe = () => {
           />
 
           <FormController
+            label={'Email'}
             errors={errors}
             control={control}
             name={'email'}
@@ -114,6 +113,7 @@ const AboutMe = () => {
           <FormController
             errors={errors}
             control={control}
+            label={'Phone'}
             name={'phoneNumber'}
             render={(field) => (
               <Input {...field} placeholder={'eg. 0938223490'} maxLength={21} />
@@ -123,6 +123,7 @@ const AboutMe = () => {
         <FormController
           errors={errors}
           control={control}
+          label={'Address'}
           name={'location'}
           render={(field) => (
             <Input

@@ -2,14 +2,17 @@ import { createContext, useContext } from 'react';
 
 import MasterStore from './stores/MasterStore';
 import ModalStore from './stores/ModalStore';
+import UserStore from './stores/UserStore';
 
 export class RootStore {
   modalStore: ModalStore;
   masterStore: MasterStore;
+  userStore: UserStore;
 
   constructor() {
     this.modalStore = new ModalStore();
     this.masterStore = new MasterStore();
+    this.userStore = new UserStore();
   }
 }
 const rootStoreContext = createContext<RootStore | null>(null);
