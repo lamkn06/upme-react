@@ -29,7 +29,7 @@ import { SocialFacebookLogin } from '../SocialFacebookLogin';
 import { SocialGoogleLogin } from '../SocialGoogleLogin';
 import { useHookForm } from './useHookForm';
 
-export const SignInModal = observer(() => {
+export const ModalSignIn = observer(() => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();

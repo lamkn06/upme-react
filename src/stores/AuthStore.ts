@@ -1,6 +1,6 @@
 import { action, flow, makeObservable } from 'mobx';
 
-import { loginByEmail } from '../apis/AuthApi';
+import { loginByEmail, registerByEmail } from '../apis/AuthApi';
 
 export type Modal = 'signUpModal' | 'signInModal' | '';
 
@@ -16,6 +16,18 @@ export default class AuthStore {
     const { email, password } = payload;
     try {
       return yield loginByEmail(email, password);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  @action.bound registerByEmail = flow(function* (
+    this: AuthStore,
+    payload: { email: string; password: string },
+  ) {
+    const { email, password } = payload;
+    try {
+      return yield registerByEmail(email, password);
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 
-export type Modal = 'signUpModal' | 'signInModal' | '';
+export type Modal = 'signUpModal' | 'signInModal' | 'signInSuccessModal' | '';
 
 export default class ModalStore {
   @observable modals: Modal[] = [];
@@ -29,5 +29,9 @@ export default class ModalStore {
 
   @computed get isSignUpModalOpen(): boolean {
     return this.modals.includes('signUpModal');
+  }
+
+  @computed get isSignInSuccessModal(): boolean {
+    return this.modals.includes('signInSuccessModal');
   }
 }

@@ -23,6 +23,22 @@ export const loginByEmail = (email: string, password: string) => {
   });
 };
 
+export const registerByEmail = (email: string, password: string) => {
+  return new Promise((resolve, reject) => {
+    return request
+      .post(`/v1/user`, {
+        email,
+        password,
+      })
+      .then(({ data }) => {
+        resolve(data.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const loginByGoogle = (payload: SocialPayload) => {
   return request.post(`/v1/user/login/oauth/google`, payload);
 };

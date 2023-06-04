@@ -1,13 +1,15 @@
 import { observer } from 'mobx-react-lite';
 
-import { SignInModal } from '../SignInModal';
-import { SignUpModal } from '../SignUpModal';
+import { ModalSignIn } from '../ModalSignIn';
+import { ModalSignUp } from '../ModalSignUp';
+import ModalSignUpSuccess from '../ModalSignUpSuccess';
 
 export const ModalWrapper = observer(() => {
   return (
     <>
-      <SignInModal />
-      <SignUpModal />
+      <ModalSignIn />
+      <ModalSignUp />
+      <ModalSignUpSuccess />
     </>
   );
 });

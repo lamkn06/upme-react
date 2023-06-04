@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
   Input,
   InputGroup,
@@ -15,6 +13,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,22 +23,51 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
 import { ReactComponent as EyeSlashIcon } from '../../assets/icons/u_eye-slash.svg';
 import { ReactComponent as CloseIcon } from '../../assets/icons/u_times.svg';
+import { FormController } from '../../commons/FormController';
 import { useRootStore } from '../../rootStore';
+import AuthStore from '../../stores/AuthStore';
 import { SocialFacebookLogin } from '../SocialFacebookLogin';
 import { SocialGoogleLogin } from '../SocialGoogleLogin';
+import { useHookForm } from './useHookForm';
 
-export const SignUpModal = observer(() => {
+export const ModalSignUp = observer(() => {
+  const { t } = useTranslation();
+
+  const [store] = useState(() => new AuthStore());
+
   const { modalStore } = useRootStore();
   const { isSignUpModalOpen, openModal } = modalStore;
 
   const [isPasswordType, setPasswordType] = useState(false);
 
-  const { t } = useTranslation();
-  const { register, reset } = useForm();
+  const { validationSchema } = useHookForm(t);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting },
+    reset,
+    setError,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(validationSchema),
+  });
 
   const handleOnClose = () => {
     reset();
     openModal('');
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      await store.registerByEmail(data);
+      openModal('signInSuccessModal');
+    } catch (error) {
+      setError('email', { message: 'Your email or password is incorrect' });
+    }
   };
 
   return (
@@ -83,63 +111,63 @@ export const SignUpModal = observer(() => {
                   {t('Login Now')}
                 </Button>
               </Flex>
-              <FormControl isRequired mt={'32px'}>
-                <FormLabel mb={'4px'}>{t('Email Address')}</FormLabel>
-
-                <Input
-                  {...register('email', {
-                    required: t('Please input a valid email format'),
-                    pattern: {
-                      value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i,
-                      message: t('Please input a valid email format'),
-                    },
-                  })}
-                  type="email"
-                />
-
-                {/* {errors.email && (
-                  <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-                )} */}
-              </FormControl>
-              <FormControl isRequired mt={'24px'} mb={'32px'}>
-                <FormLabel mb={'4px'}>{t('Password')}</FormLabel>
-
-                <InputGroup>
-                  <Input
-                    {...register('password', {
-                      required: t('Password cannot be empty'),
-                      minLength: {
-                        value: 8,
-                        message: t('Minimum 8 characters'),
-                      },
-                    })}
-                    type={isPasswordType ? 'text' : 'password'}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Box mt={'32px'}>
+                  <FormController
+                    isRequired
+                    label="Email"
+                    errors={errors}
+                    control={control}
+                    name={'email'}
+                    render={(field) => <Input {...field} />}
                   />
+                </Box>
+                <Box mt={'24px'}>
+                  <FormController
+                    isRequired
+                    label="Password"
+                    errors={errors}
+                    control={control}
+                    name={'password'}
+                    render={(field) => (
+                      <>
+                        <InputGroup>
+                          <Input
+                            {...field}
+                            type={isPasswordType ? 'text' : 'password'}
+                            onKeyPress={(event) => {
+                              if (event.key === 'Enter') {
+                                handleSubmit(onSubmit)();
+                              }
+                            }}
+                          />
 
-                  <InputRightElement
-                    children={
-                      <Box
-                        as={isPasswordType ? EyeIcon : EyeSlashIcon}
-                        cursor={'pointer'}
-                        fill={'#3F4647'}
-                        onClick={() => setPasswordType(!isPasswordType)}
-                      />
-                    }
+                          <InputRightElement
+                            children={
+                              <Box
+                                as={isPasswordType ? EyeIcon : EyeSlashIcon}
+                                cursor={'pointer'}
+                                fill={'#3F4647'}
+                                onClick={() => setPasswordType(!isPasswordType)}
+                              />
+                            }
+                          />
+                        </InputGroup>
+                      </>
+                    )}
                   />
-                </InputGroup>
-
-                {/* {errors.password && (
-                  <FormErrorMessage>{errors.password.message}</FormErrorMessage>
-                )} */}
-              </FormControl>
-              <Button
-                w={'100%'}
-                variant={'primary'}
-                h={'48px'}
-                onClick={undefined}
-              >
-                {t('Create your account free')}
-              </Button>
+                </Box>
+                <Button
+                  mt={'24px'}
+                  variant={'primary'}
+                  w={'100%'}
+                  h={'48px'}
+                  type="submit"
+                  isDisabled={!isValid || isSubmitting}
+                >
+                  {t('Create your account free')}
+                </Button>
+              </form>
               <SocialGoogleLogin />
               <SocialFacebookLogin />
 
