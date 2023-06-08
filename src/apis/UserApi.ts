@@ -13,3 +13,17 @@ export const getUser = () => {
       });
   });
 };
+
+export const updateProfile = (id: string, payload: any) => {
+  return new Promise((resolve, reject) => {
+    return request
+      .put(`/v1/profile/${id}`, payload)
+      .then(({ data }) => {
+        resolve(data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};

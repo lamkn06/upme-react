@@ -65,10 +65,10 @@ export const ModalSignIn = observer(() => {
   const onSubmit = async (data) => {
     try {
       const { token } = await store.loginByEmail(data);
+      openModal('');
       userStore.setToken(token);
       await userStore.fetch();
 
-      openModal('');
       if (location.pathname !== '/') {
         return;
       }

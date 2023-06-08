@@ -7,6 +7,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import debounce from 'lodash/debounce';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,7 +28,7 @@ const AboutMe = () => {
     control,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm({
     mode: 'onChange',
     defaultValues: useMemo(() => {
@@ -49,13 +50,25 @@ const AboutMe = () => {
   useEffect(() => {
     reset({
       fullName: profile.fullName || '',
-      personalStatement: '',
+      personalStatement: profile.fullName || '',
       email: profile.email || '',
       phoneNumber: '',
       location: '',
       position: '',
     });
   }, [profile]);
+
+  useEffect(() => {
+    const subscription = watch(
+      debounce((value) => {
+        if (isDirty || isValid) {
+          return;
+        }
+        userStore.update(value);
+      }, 1000),
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Skeleton isLoaded={!loading}>

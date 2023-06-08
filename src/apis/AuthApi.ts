@@ -40,7 +40,16 @@ export const registerByEmail = (email: string, password: string) => {
 };
 
 export const loginByGoogle = (payload: SocialPayload) => {
-  return request.post(`/v1/user/login/oauth/google`, payload);
+  return new Promise((resolve, reject) => {
+    return request
+      .post(`/v1/user/login/oauth/google`, payload)
+      .then(({ data }) => {
+        resolve(data.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };
 
 export const loginByFacebook = (payload: SocialPayload) => {

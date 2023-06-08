@@ -1,6 +1,6 @@
 import { action, flow, makeObservable, observable } from 'mobx';
 
-import { getUser } from '../apis/UserApi';
+import { getUser, updateProfile } from '../apis/UserApi';
 import type { UserProfile, UserSetting } from '../models/User';
 
 export default class UserStore {
@@ -23,7 +23,6 @@ export default class UserStore {
   }
 
   @action.bound fetch = flow(function* (this: UserStore) {
-    console.log('111', this.token);
     if (!this.token) return;
     this.loading = true;
     try {
@@ -37,6 +36,15 @@ export default class UserStore {
       throw error;
     } finally {
       this.loading = false;
+    }
+  });
+
+  @action.bound update = flow(function* (this: UserStore, value: any) {
+    try {
+      yield updateProfile(this.profile.id, value);
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   });
 

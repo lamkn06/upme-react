@@ -1,17 +1,48 @@
 import { Button, Image } from '@chakra-ui/react';
 import { GoogleLogin } from '@leecheuk/react-google-login';
 import { observer } from 'mobx-react-lite';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import GoogleIcon from '../../assets/images/google.svg';
+import { useRootStore } from '../../rootStore';
+import AuthStore from '../../stores/AuthStore';
 
 export const SocialGoogleLogin = observer(() => {
-  const responseGoogle = (response) => {
-    console.log(response);
+  const [store] = useState(() => new AuthStore());
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { modalStore, userStore } = useRootStore();
+  const { openModal } = modalStore;
+
+  const handleOnClose = () => {
+    openModal('');
+  };
+
+  const responseGoogleSuccess = async (response: any) => {
+    const { token } = await store.loginByGoogle(response.profileObj);
+    handleOnClose();
+
+    userStore.setToken(token);
+    await userStore.fetch();
+
+    if (location.pathname !== '/') {
+      return;
+    }
+
+    navigate('/profile');
+  };
+
+  const responseGoogleFail = (response: any) => {
+    console.log(response.profileObj);
   };
 
   return (
     <GoogleLogin
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+      scope="email"
+      pluginName="Upme Login"
       render={(renderProps) => (
         <Button
           w={'100%'}
@@ -26,8 +57,8 @@ export const SocialGoogleLogin = observer(() => {
           Google
         </Button>
       )}
-      onSuccess={responseGoogle}
-      onFailure={responseGoogle}
+      onSuccess={responseGoogleSuccess}
+      onFailure={responseGoogleFail}
       cookiePolicy={'single_host_origin'}
     />
   );
