@@ -13,7 +13,7 @@ const MotionFlex = m(Flex);
 const MotionBox = m(Box);
 
 const Sidebar = () => {
-  const { masterStore } = useRootStore();
+  const { masterStore, userStore } = useRootStore();
   const { isSideBarOpen } = masterStore;
 
   return (
@@ -58,7 +58,7 @@ const Sidebar = () => {
             closed: { opacity: 0, y: '-100%', display: 'none' },
           }}
         >
-          <AvatarHolder />
+          <AvatarHolder avatar={userStore.profile?.profilePicture} />
           <SidebarPoint />
           <SidebarFollow />
         </MotionBox>

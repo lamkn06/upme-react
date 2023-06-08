@@ -7,13 +7,7 @@ export default class UserStore {
   @observable loading = false;
   @observable isAuthenticated = false;
 
-  @observable profile: UserProfile = {
-    displayName: '',
-    email: '',
-    fullName: '',
-    id: '',
-    profilePicture: '',
-  };
+  @observable profile: UserProfile = null;
   @observable setting: UserSetting = null;
   @observable token = localStorage.getItem('token');
 
@@ -41,7 +35,7 @@ export default class UserStore {
 
   @action.bound update = flow(function* (this: UserStore, value: any) {
     try {
-      yield updateProfile(this.profile.id, value);
+      yield updateProfile(this.profile?.id, value);
     } catch (error) {
       console.log(error);
       throw error;
@@ -50,6 +44,8 @@ export default class UserStore {
 
   @action.bound signOut(this: UserStore) {
     this.isAuthenticated = false;
+    this.profile = null;
+    this.setting = null;
     localStorage.removeItem('token');
   }
 

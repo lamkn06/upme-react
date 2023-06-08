@@ -9,7 +9,7 @@ import { RouterProvider } from 'react-router-dom';
 
 import i18n from './i18n';
 import { Provider } from './rootStore';
-import { router } from './routes';
+import { routers } from './routes';
 import theme from './theme';
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
       <ChakraProvider theme={theme}>
         <Provider>
           <Suspense fallback={<></>}>
-            <RouterProvider router={router} fallbackElement={<></>} />
+            <RouterProvider router={routers} fallbackElement={<></>} />
           </Suspense>
         </Provider>
       </ChakraProvider>

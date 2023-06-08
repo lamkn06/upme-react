@@ -1,10 +1,15 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import { useCallback } from 'react';
 
 import { ReactComponent as EditIcon } from '../../assets/icons/u_edit-alt.svg';
 import AvatarPlaceholder from '../../assets/images/avatar-placeholder.svg';
 
-export const AvatarHolder = () => {
+interface Props {
+  avatar: string;
+}
+
+export const AvatarHolder = observer((props: Props) => {
   const handleOpenProfileModal = useCallback((isOpen: boolean) => {
     console.log(isOpen);
   }, []);
@@ -13,14 +18,13 @@ export const AvatarHolder = () => {
     <Flex direction={'column'} align={'center'} mt={'44px'}>
       <Box position={'relative'}>
         <Image
-          src={AvatarPlaceholder}
+          src={props.avatar || AvatarPlaceholder}
           bg={'#F8F8F9'}
           boxSize={112}
           border={'2px solid white'}
           borderRadius={24}
           mx={'auto'}
-          pt={'12px'}
-          px={'12px'}
+          loading="lazy"
         />
 
         <Box
@@ -48,4 +52,4 @@ export const AvatarHolder = () => {
       </Text>
     </Flex>
   );
-};
+});

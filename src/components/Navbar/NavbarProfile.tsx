@@ -20,7 +20,7 @@ export const NavbarProfile = () => {
           boxShadow={'0px 0px 0px 2px #06DCFF'}
           borderRadius={'full'}
           boxSize={'38px'}
-          src={emptyPicture}
+          src={userStore.profile?.profilePicture || emptyPicture}
           mr={'24px'}
           cursor={'pointer'}
         />

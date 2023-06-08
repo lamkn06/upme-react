@@ -2,9 +2,11 @@ import { Box, Button, Flex, Spacer } from '@chakra-ui/react';
 import { domAnimation, LazyMotion, m } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as MenuIcon } from '../../assets/icons/u_align.svg';
 import { ReactComponent as EyeIcon } from '../../assets/icons/u_eye.svg';
+import { ReactComponent as HomeIcon } from '../../assets/icons/u_home.svg';
 import { ReactComponent as HamburgerLeftIcon } from '../../assets/icons/u_left-indent.svg';
 import { useRootStore } from '../../rootStore';
 import { SelectLanguage } from '../SelectLanguage';
@@ -14,10 +16,11 @@ const MotionFlex = m(Flex);
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const location = useLocation();
   const { masterStore, modalStore, userStore } = useRootStore();
   const { isSideBarOpen, setSideBarOpen } = masterStore;
-  const { loading, isAuthenticated } = userStore;
-
+  const { loading, isAuthenticated, setting } = userStore;
+  const isProfilePage = location.pathname.includes('/profile');
   return (
     <>
       <LazyMotion features={domAnimation}>
@@ -79,14 +82,31 @@ const Navbar = () => {
           </Button>
 
           {isAuthenticated && (
-            <Button
-              leftIcon={<EyeIcon fill={'black'} />}
-              background={'transparent'}
-              textTransform={'none'}
-              ml={'16px'}
-            >
-              {t('View as public')}
-            </Button>
+            <>
+              {isProfilePage ? (
+                <Button
+                  as={Link}
+                  to={`/${setting.page}`}
+                  leftIcon={<EyeIcon fill={'black'} />}
+                  background={'transparent'}
+                  textTransform={'none'}
+                  ml={'16px'}
+                >
+                  {t('View as public')}
+                </Button>
+              ) : (
+                <Button
+                  as={Link}
+                  to={`/profile`}
+                  leftIcon={<HomeIcon fill={'black'} />}
+                  background={'transparent'}
+                  textTransform={'none'}
+                  ml={'16px'}
+                >
+                  {t('View my profile')}
+                </Button>
+              )}
+            </>
           )}
         </MotionFlex>
       </LazyMotion>

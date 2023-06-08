@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import debounce from 'lodash/debounce';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,7 +28,7 @@ const AboutMe = () => {
     handleSubmit,
     control,
     watch,
-    reset,
+
     formState: { errors, isDirty, isValid },
   } = useForm({
     mode: 'onChange',
@@ -48,14 +49,18 @@ const AboutMe = () => {
   const aboutMe = watch();
 
   useEffect(() => {
-    reset({
-      fullName: profile.fullName || '',
-      personalStatement: profile.fullName || '',
-      email: profile.email || '',
-      phoneNumber: '',
-      location: '',
-      position: '',
-    });
+    if (!profile) {
+      return;
+    }
+    console.log(toJS(profile));
+    // reset({
+    //   fullName: profile.fullName || '',
+    //   personalStatement: profile.fullName || '',
+    //   email: profile.email || '',
+    //   phoneNumber: '',
+    //   location: '',
+    //   position: '',
+    // });
   }, [profile]);
 
   useEffect(() => {
