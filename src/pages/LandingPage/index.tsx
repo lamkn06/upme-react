@@ -12,17 +12,17 @@ const LandingPage = () => {
   return (
     <>
       <LandingPageNavbar
-        onLogin={() => modalStore.openModal('signInModal')}
-        onSignUp={() => modalStore.openModal('signUpModal')}
+        onLogin={() => modalStore.openModal('modalSignIn')}
+        onSignUp={() => modalStore.openModal('modalSignUp')}
       />
       <LandingPageTop
-        onLogin={() => modalStore.openModal('signInModal')}
-        onSignUp={() => modalStore.openModal('signUpModal')}
+        onLogin={() => modalStore.openModal('modalSignIn')}
+        onSignUp={() => modalStore.openModal('modalSignUp')}
       />
-      <LandingPageContent onLogin={() => modalStore.openModal('signInModal')} />
+      <LandingPageContent onLogin={() => modalStore.openModal('modalSignIn')} />
       <LandingPageFooter
-        onLogin={() => modalStore.openModal('signInModal')}
-        onSignUp={() => modalStore.openModal('signUpModal')}
+        onLogin={() => modalStore.openModal('modalSignIn')}
+        onSignUp={() => modalStore.openModal('modalSignUp')}
       />
     </>
   );

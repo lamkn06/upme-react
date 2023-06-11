@@ -58,7 +58,7 @@ const Navbar = () => {
                       bg: '#F8F8F9',
                       color: '#06DCFF',
                     }}
-                    onClick={() => modalStore.openModal('signInModal')}
+                    onClick={() => modalStore.openModal('modalSignIn')}
                   >
                     {t('SignIn')}
                   </Button>
@@ -68,7 +68,7 @@ const Navbar = () => {
                     mr={'24px'}
                     minW={'138px'}
                     _focus={{}}
-                    onClick={() => modalStore.openModal('signUpModal')}
+                    onClick={() => modalStore.openModal('modalSignUp')}
                   >
                     {t('SignUp')}
                   </Button>

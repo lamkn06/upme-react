@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-import { ModalWrapper } from '../../components/ModalWrapper';
+import { Modals } from '../../components/Modals';
 
 const Root = () => {
   return (
     <>
       <Outlet />
-      <ModalWrapper />
+      <Modals />
     </>
   );
 };

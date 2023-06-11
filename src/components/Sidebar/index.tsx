@@ -13,7 +13,7 @@ const MotionFlex = m(Flex);
 const MotionBox = m(Box);
 
 const Sidebar = () => {
-  const { masterStore, userStore } = useRootStore();
+  const { masterStore, userStore, modalStore } = useRootStore();
   const { isSideBarOpen } = masterStore;
 
   return (
@@ -58,7 +58,10 @@ const Sidebar = () => {
             closed: { opacity: 0, y: '-100%', display: 'none' },
           }}
         >
-          <AvatarHolder avatar={userStore.profile?.profilePicture} />
+          <AvatarHolder
+            avatar={userStore.profile?.profilePicture}
+            onEditProfile={() => modalStore.openModal('modalEditProfile')}
+          />
           <SidebarPoint />
           <SidebarFollow />
         </MotionBox>

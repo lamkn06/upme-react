@@ -37,7 +37,7 @@ export const ModalSignIn = observer(() => {
   const [store] = useState(() => new AuthStore());
 
   const { modalStore, userStore } = useRootStore();
-  const { isSignInModalOpen, openModal } = modalStore;
+  const { isModalSignInOpen, openModal } = modalStore;
 
   const [isPasswordType, setPasswordType] = useState(false);
 
@@ -84,11 +84,11 @@ export const ModalSignIn = observer(() => {
       <Modal
         isCentered
         scrollBehavior={'inside'}
-        isOpen={isSignInModalOpen}
+        isOpen={isModalSignInOpen}
         onClose={undefined}
       >
         <ModalOverlay />
-        <ModalContent rounded={'2px'} minH={'626px'} maxW={'464px'} mx={'8px'}>
+        <ModalContent minH={'626px'} maxW={'464px'} mx={'8px'}>
           <Box
             as={CloseIcon}
             boxSize={'32px'}
@@ -114,7 +114,7 @@ export const ModalSignIn = observer(() => {
                 h={'auto'}
                 ml={'0.25em'}
                 _focus={{}}
-                onClick={() => openModal('signUpModal')}
+                onClick={() => openModal('modalSignUp')}
               >
                 {t('Create Account')}
               </Button>

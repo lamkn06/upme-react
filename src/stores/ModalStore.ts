@@ -1,6 +1,11 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 
-export type Modal = 'signUpModal' | 'signInModal' | 'signInSuccessModal' | '';
+export type Modal =
+  | 'modalSignUp'
+  | 'modalSignIn'
+  | 'modalSignInSuccess'
+  | 'modalEditProfile'
+  | '';
 
 export default class ModalStore {
   @observable modals: Modal[] = [];
@@ -23,15 +28,19 @@ export default class ModalStore {
     this.modals = this.modals.filter((m) => m !== modal);
   }
 
-  @computed get isSignInModalOpen(): boolean {
-    return this.modals.includes('signInModal');
+  @computed get isModalSignInOpen(): boolean {
+    return this.modals.includes('modalSignIn');
   }
 
-  @computed get isSignUpModalOpen(): boolean {
-    return this.modals.includes('signUpModal');
+  @computed get isModalSignUpOpen(): boolean {
+    return this.modals.includes('modalSignUp');
   }
 
-  @computed get isSignInSuccessModal(): boolean {
-    return this.modals.includes('signInSuccessModal');
+  @computed get isModalSignInSuccessOpen(): boolean {
+    return this.modals.includes('modalSignInSuccess');
+  }
+
+  @computed get isModalEditProfileOpen(): boolean {
+    return this.modals.includes('modalEditProfile');
   }
 }

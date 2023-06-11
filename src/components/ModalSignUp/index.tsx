@@ -36,7 +36,7 @@ export const ModalSignUp = observer(() => {
   const [store] = useState(() => new AuthStore());
 
   const { modalStore } = useRootStore();
-  const { isSignUpModalOpen, openModal } = modalStore;
+  const { isModalSignUpOpen: isSignUpModalOpen, openModal } = modalStore;
 
   const [isPasswordType, setPasswordType] = useState(false);
 
@@ -64,7 +64,7 @@ export const ModalSignUp = observer(() => {
   const onSubmit = async (data) => {
     try {
       await store.registerByEmail(data);
-      openModal('signInSuccessModal');
+      openModal('modalSignInSuccess');
     } catch (error) {
       setError('email', { message: 'Your email or password is incorrect' });
     }
@@ -79,7 +79,7 @@ export const ModalSignUp = observer(() => {
         onClose={() => openModal('')}
       >
         <ModalOverlay />
-        <ModalContent rounded={'2px'} maxW={'464px'} mx={'8px'}>
+        <ModalContent maxW={'464px'} mx={'8px'}>
           <Box
             as={CloseIcon}
             boxSize={'32px'}
@@ -106,7 +106,7 @@ export const ModalSignUp = observer(() => {
                   h={'auto'}
                   ml={'0.25em'}
                   _focus={{}}
-                  onClick={() => openModal('signInModal')}
+                  onClick={() => openModal('modalSignIn')}
                 >
                   {t('Login Now')}
                 </Button>

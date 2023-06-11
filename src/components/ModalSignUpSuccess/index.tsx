@@ -13,10 +13,11 @@ import { ReactComponent as SuccessIcon } from '../../assets/icons/u_check-circle
 import { ReactComponent as CloseIcon } from '../../assets/icons/u_times.svg';
 import { useRootStore } from '../../rootStore';
 
-const ModalSignUpSuccess = () => {
+export const ModalSignUpSuccess = observer(() => {
   const { t } = useTranslation();
   const { modalStore } = useRootStore();
-  const { openModal, isSignInSuccessModal } = modalStore;
+  const { openModal, isModalSignInSuccessOpen: isSignInSuccessModal } =
+    modalStore;
 
   const handleOnClose = () => {
     openModal('');
@@ -30,12 +31,7 @@ const ModalSignUpSuccess = () => {
       onClose={handleOnClose}
     >
       <ModalOverlay />
-      <ModalContent
-        rounded={'2px'}
-        maxW={'464px'}
-        mx={'8px'}
-        minH={'fit-content'}
-      >
+      <ModalContent maxW={'464px'} mx={'8px'} minH={'fit-content'}>
         <Box
           as={CloseIcon}
           boxSize={'32px'}
@@ -58,6 +54,4 @@ const ModalSignUpSuccess = () => {
       </ModalContent>
     </Modal>
   );
-};
-
-export default observer(ModalSignUpSuccess);
+});

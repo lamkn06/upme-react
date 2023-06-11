@@ -2,7 +2,7 @@ import { action, flow, makeObservable } from 'mobx';
 
 import { loginByEmail, loginByGoogle, registerByEmail } from '../apis/AuthApi';
 
-export type Modal = 'signUpModal' | 'signInModal' | '';
+export type Modal = 'modalSignUp' | 'modalSignIn' | '';
 
 export default class AuthStore {
   constructor() {
