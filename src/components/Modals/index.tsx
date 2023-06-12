@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
+import { ModalCropAvatar } from '../ModalCropAvatar';
 import { ModalEditProfile } from '../ModalEditProfile';
 import { ModalSignIn } from '../ModalSignIn';
 import { ModalSignUp } from '../ModalSignUp';
@@ -12,6 +13,7 @@ export const Modals = observer(() => {
       <ModalSignUp />
       <ModalSignUpSuccess />
       <ModalEditProfile />
+      <ModalCropAvatar />
     </>
   );
 });

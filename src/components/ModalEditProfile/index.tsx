@@ -1,7 +1,6 @@
 import { Button, Flex, Image, Input } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import AvatarPlaceholder from '../../assets/images/avatar-placeholder.svg';
@@ -11,25 +10,19 @@ import { ModalWrapper } from '../ModalWrapper';
 export const ModalEditProfile = observer(() => {
   const { t } = useTranslation();
   const inputRef = useRef(null);
-  const { modalStore } = useRootStore();
+  const { modalStore, userStore } = useRootStore();
   const { isModalEditProfileOpen, openModal } = modalStore;
+  const { setAvatar } = userStore;
 
   const handleOnClose = () => {
     openModal('');
   };
 
   const handleSelectFile = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const file = e.target.files[0] as File;
+    setAvatar(file);
+    openModal('modalCropAvatar');
   };
-
-  const {} = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
 
   return (
     <ModalWrapper

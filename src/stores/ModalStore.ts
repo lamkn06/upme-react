@@ -1,10 +1,11 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, toJS } from 'mobx';
 
 export type Modal =
   | 'modalSignUp'
   | 'modalSignIn'
   | 'modalSignInSuccess'
   | 'modalEditProfile'
+  | 'modalCropAvatar'
   | '';
 
 export default class ModalStore {
@@ -21,11 +22,13 @@ export default class ModalStore {
     }
 
     // need previous state
-    this.modals = [modal];
+    this.modals = [...this.modals, modal];
   }
 
   @action.bound closeModal(modal: Modal): void {
+    console.log(toJS(this.modals));
     this.modals = this.modals.filter((m) => m !== modal);
+    console.log(toJS(this.modals));
   }
 
   @computed get isModalSignInOpen(): boolean {
@@ -42,5 +45,9 @@ export default class ModalStore {
 
   @computed get isModalEditProfileOpen(): boolean {
     return this.modals.includes('modalEditProfile');
+  }
+
+  @computed get isModalCropAvatarOpen(): boolean {
+    return this.modals.includes('modalCropAvatar');
   }
 }

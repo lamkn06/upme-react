@@ -11,6 +11,8 @@ export default class UserStore {
   @observable setting: UserSetting = null;
   @observable token = localStorage.getItem('token');
 
+  @observable selectingAvatar: File = null;
+
   constructor() {
     this.fetch();
     makeObservable(this);
@@ -52,5 +54,9 @@ export default class UserStore {
   @action.bound setToken(token: string) {
     localStorage.setItem('token', token);
     this.token = token;
+  }
+
+  @action.bound setAvatar(file: File) {
+    this.selectingAvatar = file;
   }
 }

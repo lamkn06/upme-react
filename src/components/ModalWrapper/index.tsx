@@ -42,7 +42,7 @@ export const ModalWrapper = observer((props: Props) => {
                 boxSize={'32px'}
                 cursor={'pointer'}
                 fill={'#3F4647'}
-                onClick={undefined}
+                onClick={props.onClose}
               />
             </Flex>
           </ModalHeader>
