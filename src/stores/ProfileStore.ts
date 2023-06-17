@@ -33,6 +33,7 @@ export default class ProfileStore {
 
       if (profile.educations.length > 0) {
         this.sessionStore.addSection('education');
+        this.educations = profile.educations;
       }
     } catch (error) {
       throw error;
@@ -53,11 +54,23 @@ export default class ProfileStore {
     }
   });
 
-  @action.bound setProfile(profile: UserProfile) {
-    this.profile = profile;
-  }
-
   @action.bound createEducation(education: Education) {
     this.educations.push(education);
+
+    if (this.educations.length === 1) {
+      this.sessionStore.addSection('education');
+    }
+  }
+
+  @action.bound deleteEducation(index: number) {
+    this.educations.splice(index, 1);
+
+    if (this.educations.length === 0) {
+      this.sessionStore.removeSection('education');
+    }
+  }
+
+  @action.bound setProfile(profile: UserProfile) {
+    this.profile = profile;
   }
 }

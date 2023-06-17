@@ -36,7 +36,7 @@ export const ModalSignIn = observer(() => {
 
   const [store] = useState(() => new AuthStore());
 
-  const { modalStore, userStore } = useRootStore();
+  const { modalStore, userStore, profileStore } = useRootStore();
   const { isModalSignInOpen, openModal } = modalStore;
 
   const [isPasswordType, setPasswordType] = useState(false);
@@ -68,6 +68,7 @@ export const ModalSignIn = observer(() => {
       openModal('');
       userStore.setToken(token);
       await userStore.fetch();
+      await profileStore.fetch();
 
       if (location.pathname !== '/') {
         return;

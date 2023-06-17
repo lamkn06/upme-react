@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 export default class SessionStore {
   @observable sections: string[] = [];
@@ -17,5 +17,9 @@ export default class SessionStore {
 
   @action.bound setSection(sections) {
     this.sections = sections;
+  }
+
+  @computed get hasEducation() {
+    return this.sections.includes('education');
   }
 }

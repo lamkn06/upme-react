@@ -13,7 +13,7 @@ export const SocialGoogleLogin = observer(() => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { modalStore, userStore } = useRootStore();
+  const { modalStore, userStore, profileStore } = useRootStore();
   const { openModal } = modalStore;
 
   const handleOnClose = () => {
@@ -26,6 +26,7 @@ export const SocialGoogleLogin = observer(() => {
 
     userStore.setToken(token);
     await userStore.fetch();
+    await profileStore.fetch();
 
     if (location.pathname !== '/') {
       return;

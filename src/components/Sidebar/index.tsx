@@ -1,6 +1,5 @@
 import { Box, Flex, Image } from '@chakra-ui/react';
 import { domAnimation, LazyMotion, m } from 'framer-motion';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import Logo from '../../assets/images/logo.svg';
