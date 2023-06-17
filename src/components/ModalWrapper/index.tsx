@@ -20,6 +20,10 @@ interface Props {
   modalBody: JSX.Element;
   modalFooter?: JSX.Element;
 
+  options?: {
+    maxW?: string;
+  };
+
   onClose(): void;
 }
 
@@ -33,7 +37,7 @@ export const ModalWrapper = observer((props: Props) => {
         onClose={props.onClose}
       >
         <ModalOverlay />
-        <ModalContent maxW={'464px'} mx={'8px'}>
+        <ModalContent maxW={props?.options?.maxW || '464px'} mx={'8px'}>
           <ModalHeader p={'16px 24px'}>
             <Flex justifyContent={'space-between'}>
               <Heading variant={'h5'}>{props.title}</Heading>

@@ -19,15 +19,16 @@ import { useHookForm } from './useHookForm';
 
 const AboutMe = () => {
   const { t } = useTranslation();
-  const { userStore } = useRootStore();
-  const { profile, loading } = userStore;
+  const { userStore, profileStore } = useRootStore();
+  const { loading, isAuthenticated } = userStore;
   const { validationSchema } = useHookForm(t);
+  const { profile, setProfile } = profileStore;
 
   const {
     handleSubmit,
     control,
     watch,
-
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm({
     mode: 'onChange',
@@ -52,14 +53,14 @@ const AboutMe = () => {
       return;
     }
 
-    // reset({
-    //   fullName: profile.fullName || '',
-    //   personalStatement: profile.fullName || '',
-    //   email: profile.email || '',
-    //   phoneNumber: '',
-    //   location: '',
-    //   position: '',
-    // });
+    reset({
+      fullName: profile.fullName || '',
+      personalStatement: profile.fullName || '',
+      email: profile.email || '',
+      phoneNumber: '',
+      location: '',
+      position: '',
+    });
   }, [profile]);
 
   useEffect(() => {
@@ -68,11 +69,19 @@ const AboutMe = () => {
         if (isDirty || isValid) {
           return;
         }
-        userStore.update(value);
+
+        setProfile({
+          ...profile,
+          ...value,
+        });
+
+        if (isAuthenticated) {
+          profileStore.update();
+        }
       }, 1000),
     );
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, profile, isAuthenticated]);
 
   return (
     <Skeleton isLoaded={!loading}>

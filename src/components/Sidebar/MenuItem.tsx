@@ -1,4 +1,5 @@
-import { Box, HStack, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Text, Tooltip, VStack } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 
 // import { ReactComponent as EducationIcon } from '../../images/icons/u_book-reader.svg';
@@ -6,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 // import { ReactComponent as TimelineIcon } from '../../images/icons/u_clock.svg';
 // import { ReactComponent as ProjectIcon } from '../../images/icons/u_cube.svg';
 import { ReactComponent as HomeIcon } from '../../assets/icons/u_home-alt.svg';
+import { ReactComponent as PlusIcon } from '../../assets/icons/u_plus.svg';
 import { COLOR_MAIN } from '../../constants/color';
 import { useRootStore } from '../../rootStore';
 // import { ReactComponent as SkillIcon } from '../../images/icons/u_layer-group.svg';
@@ -13,7 +15,7 @@ import { useRootStore } from '../../rootStore';
 
 const MenuItems = () => {
   const { t } = useTranslation();
-  const { masterStore } = useRootStore();
+  const { masterStore, modalStore } = useRootStore();
   const { isSideBarOpen } = masterStore;
 
   return (
@@ -46,9 +48,51 @@ const MenuItems = () => {
 
           {isSideBarOpen && <Text color={'white'}>{t('AboutMe')}</Text>}
         </HStack>
+
+        <HStack cursor={'pointer'}>
+          <Tooltip
+            isDisabled={isSideBarOpen}
+            hasArrow
+            shouldWrapChildren
+            gutter={32}
+            placement={'right'}
+            label={t('Add Section')}
+            bg="#666666"
+            color="white"
+            sx={{
+              '.chakra-tooltip__arrow': {
+                bg: '#666666',
+              },
+            }}
+          >
+            <Box as={PlusIcon} fill={COLOR_MAIN} />
+          </Tooltip>
+
+          {isSideBarOpen && (
+            <Button
+              style={{
+                border: 0,
+                background: 'transparent',
+                margin: 0,
+              }}
+              onClick={() => modalStore.openModal('modalAddSection')}
+            >
+              <Text
+                color={'white'}
+                style={{
+                  fontWeight: 'normal',
+
+                  textTransform: 'capitalize',
+                }}
+              >
+                Add Section
+              </Text>
+            </Button>
+          )}
+        </HStack>
       </VStack>
     </Box>
   );
 };
 
-export default MenuItems;
+export default observer(MenuItems);

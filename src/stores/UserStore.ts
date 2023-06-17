@@ -1,24 +1,17 @@
 import { action, flow, makeObservable, observable } from 'mobx';
 
-import { getUser, updateProfile } from '../apis/UserApi';
-import type { UserProfile, UserSetting } from '../models/User';
+import { getUser } from '../apis/UserApi';
+import type { UserSetting } from '../models/User';
 
 export default class UserStore {
   @observable loading = false;
   @observable isAuthenticated = false;
 
-  @observable profile: UserProfile = {
-    displayName: '',
-    email: '',
-    fullName: '',
-    id: '',
-    profilePicture: '',
-  };
   @observable setting: UserSetting = null;
   @observable token = localStorage.getItem('token');
 
   @observable selectingImage = null;
-  @observable cropAvatar = null;
+  @observable cropAvatar: Blob = null;
 
   constructor() {
     this.fetch();
@@ -30,8 +23,7 @@ export default class UserStore {
     this.loading = true;
     try {
       const response = yield getUser();
-      const { profile, setting } = response;
-      this.profile = profile;
+      const { setting } = response;
       this.setting = setting;
 
       this.isAuthenticated = true;
@@ -42,18 +34,8 @@ export default class UserStore {
     }
   });
 
-  @action.bound update = flow(function* (this: UserStore, value: any) {
-    try {
-      yield updateProfile(this.profile?.id, value);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  });
-
   @action.bound signOut(this: UserStore) {
     this.isAuthenticated = false;
-    this.profile = null;
     this.setting = null;
     localStorage.removeItem('token');
   }
@@ -67,7 +49,7 @@ export default class UserStore {
     this.selectingImage = file;
   }
 
-  @action.bound setCropAvatar(file: string | ArrayBuffer) {
-    this.cropAvatar = file;
+  @action.bound setCropAvatar(blob: Blob) {
+    this.cropAvatar = blob;
   }
 }

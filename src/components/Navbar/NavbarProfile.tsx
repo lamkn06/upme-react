@@ -1,12 +1,13 @@
 import { Image, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 
 import emptyPicture from '../../assets/images/avatar-placeholder.svg';
 import { useRootStore } from '../../rootStore';
 
-export const NavbarProfile = () => {
+export const NavbarProfile = observer(() => {
   const { t } = useTranslation();
-  const { userStore } = useRootStore();
+  const { profileStore, userStore } = useRootStore();
 
   const handleSignOut = () => {
     userStore.signOut();
@@ -20,7 +21,7 @@ export const NavbarProfile = () => {
           boxShadow={'0px 0px 0px 2px #06DCFF'}
           borderRadius={'full'}
           boxSize={'38px'}
-          src={userStore.profile?.profilePicture || emptyPicture}
+          src={profileStore.profile?.profilePicture || emptyPicture}
           mr={'24px'}
           cursor={'pointer'}
         />
@@ -31,4 +32,4 @@ export const NavbarProfile = () => {
       </MenuList>
     </Menu>
   );
-};
+});

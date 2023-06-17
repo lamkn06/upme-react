@@ -6,6 +6,8 @@ export type Modal =
   | 'modalSignInSuccess'
   | 'modalEditProfile'
   | 'modalCropAvatar'
+  | 'modalAddSection'
+  | 'modalEducation'
   | '';
 
 export default class ModalStore {
@@ -47,5 +49,13 @@ export default class ModalStore {
 
   @computed get isModalCropAvatarOpen(): boolean {
     return this.modals.includes('modalCropAvatar');
+  }
+
+  @computed get isModalAddSectionOpen(): boolean {
+    return this.modals.includes('modalAddSection');
+  }
+
+  @computed get isModalEducationOpen(): boolean {
+    return this.modals.includes('modalEducation');
   }
 }

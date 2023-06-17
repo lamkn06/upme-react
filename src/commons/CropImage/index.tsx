@@ -5,7 +5,7 @@ import ReactCrop, { type Crop } from 'react-image-crop';
 interface Props {
   src: string;
   aspect?: number;
-  onCrop(result: string | ArrayBuffer | null): void;
+  onCrop(blob: Blob): void;
 }
 
 export const CropImage = observer((props: Props) => {
@@ -37,15 +37,10 @@ export const CropImage = observer((props: Props) => {
     canvas.toBlob(
       (blob) => {
         if (!blob) {
-          console.error('Canvas is empty');
           return;
         }
 
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          props.onCrop(reader.result);
-        };
+        props.onCrop(blob);
       },
       'image/jpeg',
       1,
