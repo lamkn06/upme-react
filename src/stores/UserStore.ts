@@ -7,11 +7,18 @@ export default class UserStore {
   @observable loading = false;
   @observable isAuthenticated = false;
 
-  @observable profile: UserProfile = null;
+  @observable profile: UserProfile = {
+    displayName: '',
+    email: '',
+    fullName: '',
+    id: '',
+    profilePicture: '',
+  };
   @observable setting: UserSetting = null;
   @observable token = localStorage.getItem('token');
 
-  @observable selectingAvatar: File = null;
+  @observable selectingImage = null;
+  @observable cropAvatar = null;
 
   constructor() {
     this.fetch();
@@ -56,7 +63,11 @@ export default class UserStore {
     this.token = token;
   }
 
-  @action.bound setAvatar(file: File) {
-    this.selectingAvatar = file;
+  @action.bound setSelectingImageImage(file: File) {
+    this.selectingImage = file;
+  }
+
+  @action.bound setCropAvatar(file: string | ArrayBuffer) {
+    this.cropAvatar = file;
   }
 }

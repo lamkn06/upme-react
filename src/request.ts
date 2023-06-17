@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const request = axios.create({
   baseURL: 'https://api.upme.cloud',
   headers: {
@@ -17,6 +18,18 @@ request.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  },
+);
+
+request.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error: any) => {
+    if (error?.response?.status === 401) {
+      localStorage.removeItem('token');
+    }
     return Promise.reject(error);
   },
 );
