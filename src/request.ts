@@ -24,11 +24,13 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data.data;
   },
   (error: any) => {
     if (error?.response?.status === 401) {
       localStorage.removeItem('token');
+      location.reload();
+      return;
     }
     return Promise.reject(error);
   },

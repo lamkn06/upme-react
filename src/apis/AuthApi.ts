@@ -8,48 +8,21 @@ interface SocialPayload {
 }
 
 export const loginByEmail = (email: string, password: string) => {
-  return new Promise((resolve, reject) => {
-    return request
-      .post(`/v1/user/login`, {
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        resolve(data.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
+  return request.post(`/v1/user/login`, {
+    email,
+    password,
   });
 };
 
 export const registerByEmail = (email: string, password: string) => {
-  return new Promise((resolve, reject) => {
-    return request
-      .post(`/v1/user`, {
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        resolve(data.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
+  return request.post(`/v1/user`, {
+    email,
+    password,
   });
 };
 
 export const loginByGoogle = (payload: SocialPayload) => {
-  return new Promise((resolve, reject) => {
-    return request
-      .post(`/v1/user/login/oauth/google`, payload)
-      .then(({ data }) => {
-        resolve(data.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+  return request.post(`/v1/user/login/oauth/google`, payload);
 };
 
 export const loginByFacebook = (payload: SocialPayload) => {

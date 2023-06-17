@@ -12,10 +12,12 @@ export const ModalEditProfile = observer(() => {
   const inputRef = useRef(null);
   const { modalStore, userStore } = useRootStore();
   const { isModalEditProfileOpen, openModal } = modalStore;
-  const { setSelectingImageImage, cropAvatar } = userStore;
+  const { setSelectingImageImage, setCropAvatar, cropAvatar, profile } =
+    userStore;
 
   const handleOnClose = () => {
     openModal('');
+    setCropAvatar(null);
   };
 
   const handleSelectFile = (e) => {
@@ -33,7 +35,7 @@ export const ModalEditProfile = observer(() => {
         <>
           <Flex justifyContent={'space-between'} align={'center'}>
             <Image
-              src={cropAvatar || AvatarPlaceholder}
+              src={cropAvatar || profile.profilePicture || AvatarPlaceholder}
               bg={'#F8F8F9'}
               boxSize={112}
               border={'2px solid white'}

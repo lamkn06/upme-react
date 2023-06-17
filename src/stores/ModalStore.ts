@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 export type Modal =
   | 'modalSignUp'
@@ -26,9 +26,7 @@ export default class ModalStore {
   }
 
   @action.bound closeModal(modal: Modal): void {
-    console.log(toJS(this.modals));
     this.modals = this.modals.filter((m) => m !== modal);
-    console.log(toJS(this.modals));
   }
 
   @computed get isModalSignInOpen(): boolean {
