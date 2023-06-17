@@ -1,7 +1,9 @@
 import { action, flow, makeObservable, observable } from 'mobx';
 
 import { getProfile, updateProfile } from '../apis/ProfileApi';
+import type { Education } from '../models/Education';
 import type { UserProfile } from '../models/User';
+import SessionStore from './SessionStore';
 
 export default class ProfileStore {
   @observable loading = false;
@@ -15,9 +17,9 @@ export default class ProfileStore {
     profilePicture: '',
   };
 
-  @observable educations = [];
+  @observable educations: Education[] = [];
 
-  constructor() {
+  constructor(private sessionStore: SessionStore) {
     this.fetch();
     makeObservable(this);
   }
@@ -28,6 +30,10 @@ export default class ProfileStore {
     try {
       const profile = yield getProfile();
       this.profile = profile;
+
+      if (profile.educations.length > 0) {
+        this.sessionStore.addSection('education');
+      }
     } catch (error) {
       throw error;
     } finally {
@@ -51,7 +57,7 @@ export default class ProfileStore {
     this.profile = profile;
   }
 
-  @action.bound createEducation(education: any) {
+  @action.bound createEducation(education: Education) {
     this.educations.push(education);
   }
 }

@@ -1,5 +1,6 @@
 import { Box, Flex, Image } from '@chakra-ui/react';
 import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import Logo from '../../assets/images/logo.svg';
@@ -13,7 +14,8 @@ const MotionFlex = m(Flex);
 const MotionBox = m(Box);
 
 const Sidebar = () => {
-  const { masterStore, modalStore, profileStore } = useRootStore();
+  const { masterStore, modalStore, profileStore, sessionStore } =
+    useRootStore();
   const { isSideBarOpen } = masterStore;
 
   return (
@@ -66,7 +68,11 @@ const Sidebar = () => {
           <SidebarFollow />
         </MotionBox>
 
-        <MenuItems />
+        <MenuItems
+          sections={sessionStore.sections}
+          isSideBarOpen={isSideBarOpen}
+          openModal={modalStore.openModal}
+        />
       </MotionFlex>
     </LazyMotion>
   );

@@ -9,15 +9,19 @@ import { useTranslation } from 'react-i18next';
 import { ReactComponent as HomeIcon } from '../../assets/icons/u_home-alt.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/u_plus.svg';
 import { COLOR_MAIN } from '../../constants/color';
-import { useRootStore } from '../../rootStore';
+import { renderMenuItems } from '../../utils/renderMenuItems';
 // import { ReactComponent as SkillIcon } from '../../images/icons/u_layer-group.svg';
 // import { ReactComponent as WorkshopIcon } from '../../images/icons/u_workshop.svg';
 
-const MenuItems = () => {
-  const { t } = useTranslation();
-  const { masterStore, modalStore } = useRootStore();
-  const { isSideBarOpen } = masterStore;
+interface Props {
+  sections: any;
+  isSideBarOpen: boolean;
+  openModal: (modal: 'modalAddSection') => void;
+}
 
+const MenuItems = (props: Props) => {
+  const { t } = useTranslation();
+  const { isSideBarOpen, openModal, sections } = props;
   return (
     <Box p={'0 32px'}>
       <VStack
@@ -48,6 +52,53 @@ const MenuItems = () => {
 
           {isSideBarOpen && <Text color={'white'}>{t('AboutMe')}</Text>}
         </HStack>
+        {sections.map((section: string) => {
+          const menu = renderMenuItems(section);
+          return (
+            <HStack cursor={'pointer'} key={section}>
+              <Tooltip
+                isDisabled={isSideBarOpen}
+                hasArrow
+                shouldWrapChildren
+                gutter={32}
+                placement={'right'}
+                label={t('AboutMe')}
+                bg="#666666"
+                color="white"
+                sx={{
+                  '.chakra-tooltip__arrow': {
+                    bg: '#666666',
+                  },
+                }}
+              >
+                <Box as={menu.icon} fill={COLOR_MAIN} />
+              </Tooltip>
+
+              {isSideBarOpen && <Text color={'white'}>{t(menu.label)}</Text>}
+            </HStack>
+          );
+        })}
+        {/* <HStack cursor={'pointer'}>
+          <Tooltip
+            isDisabled={isSideBarOpen}
+            hasArrow
+            shouldWrapChildren
+            gutter={32}
+            placement={'right'}
+            label={t('AboutMe')}
+            bg="#666666"
+            color="white"
+            sx={{
+              '.chakra-tooltip__arrow': {
+                bg: '#666666',
+              },
+            }}
+          >
+            <Box as={HomeIcon} fill={COLOR_MAIN} />
+          </Tooltip>
+
+          {isSideBarOpen && <Text color={'white'}>{t('AboutMe')}</Text>}
+        </HStack> */}
 
         <HStack cursor={'pointer'}>
           <Tooltip
@@ -75,7 +126,7 @@ const MenuItems = () => {
                 background: 'transparent',
                 margin: 0,
               }}
-              onClick={() => modalStore.openModal('modalAddSection')}
+              onClick={() => openModal('modalAddSection')}
             >
               <Text
                 color={'white'}

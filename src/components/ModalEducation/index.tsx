@@ -5,15 +5,17 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { FormController } from '../../commons/FormController';
+import { Education } from '../../models/Education';
 import { useRootStore } from '../../rootStore';
 import { ModalWrapper } from '../ModalWrapper';
 import { useHookForm } from './useHookForm';
 
 export const ModalEducation = observer(() => {
   const { t } = useTranslation();
-  const { modalStore, profileStore } = useRootStore();
+  const { modalStore, profileStore, userStore } = useRootStore();
+  const { isAuthenticated } = userStore;
   const { openModal, isModalEducationOpen } = modalStore;
-  const { createEducation } = profileStore;
+  const { createEducation, update } = profileStore;
 
   const handleOnClose = () => {
     openModal('');
@@ -33,8 +35,14 @@ export const ModalEducation = observer(() => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = () => {
-    console.log('2111');
+  const onSubmit = (value: Education) => {
+    createEducation(value);
+
+    if (isAuthenticated) {
+      update();
+    }
+
+    handleOnClose();
   };
 
   return (

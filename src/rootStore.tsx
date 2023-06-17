@@ -3,6 +3,7 @@ import { createContext, useContext } from 'react';
 import MasterStore from './stores/MasterStore';
 import ModalStore from './stores/ModalStore';
 import ProfileStore from './stores/ProfileStore';
+import SessionStore from './stores/SessionStore';
 import UserStore from './stores/UserStore';
 
 export class RootStore {
@@ -10,12 +11,14 @@ export class RootStore {
   masterStore: MasterStore;
   userStore: UserStore;
   profileStore: ProfileStore;
+  sessionStore: SessionStore;
 
   constructor() {
     this.modalStore = new ModalStore();
+    this.sessionStore = new SessionStore();
     this.masterStore = new MasterStore();
     this.userStore = new UserStore();
-    this.profileStore = new ProfileStore();
+    this.profileStore = new ProfileStore(this.sessionStore);
   }
 }
 const rootStoreContext = createContext<RootStore | null>(null);
