@@ -8,7 +8,6 @@ export default class UserStore {
   @observable isAuthenticated = false;
 
   @observable setting: UserSetting = null;
-  @observable token = localStorage.getItem('token');
 
   @observable selectingImage = null;
   @observable cropAvatar: Blob = null;
@@ -19,7 +18,7 @@ export default class UserStore {
   }
 
   @action.bound fetch = flow(function* (this: UserStore) {
-    if (!this.token) return;
+    if (!localStorage.getItem('token')) return;
     this.loading = true;
     try {
       const response = yield getUser();
@@ -38,11 +37,6 @@ export default class UserStore {
     this.isAuthenticated = false;
     this.setting = null;
     localStorage.removeItem('token');
-  }
-
-  @action.bound setToken(token: string) {
-    localStorage.setItem('token', token);
-    this.token = token;
   }
 
   @action.bound setSelectingImageImage(file: File) {

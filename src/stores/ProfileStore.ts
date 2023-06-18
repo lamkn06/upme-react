@@ -7,7 +7,6 @@ import SessionStore from './SessionStore';
 
 export default class ProfileStore {
   @observable loading = false;
-  @observable token = localStorage.getItem('token');
 
   @observable profile: UserProfile = {
     displayName: '',
@@ -25,7 +24,7 @@ export default class ProfileStore {
   }
 
   @action.bound fetch = flow(function* (this: ProfileStore) {
-    if (!this.token) return;
+    if (!localStorage.getItem('token')) return;
     this.loading = true;
     try {
       const profile = yield getProfile();
@@ -53,6 +52,16 @@ export default class ProfileStore {
       throw error;
     }
   });
+
+  @action.bound signOut(this: ProfileStore) {
+    this.profile = {
+      displayName: '',
+      email: '',
+      fullName: '',
+      id: '',
+      profilePicture: '',
+    };
+  }
 
   @action.bound createEducation(education: Education) {
     this.educations.push(education);

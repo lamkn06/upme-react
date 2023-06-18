@@ -66,9 +66,8 @@ export const ModalSignIn = observer(() => {
     try {
       const { token } = await store.loginByEmail(data);
       openModal('');
-      userStore.setToken(token);
-      await userStore.fetch();
-      await profileStore.fetch();
+      localStorage.setItem('token', token);
+      await Promise.all([userStore.fetch(), profileStore.fetch()]);
 
       if (location.pathname !== '/') {
         return;

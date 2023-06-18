@@ -11,6 +11,7 @@ export const NavbarProfile = observer(() => {
 
   const handleSignOut = () => {
     userStore.signOut();
+    profileStore.signOut();
   };
 
   return (

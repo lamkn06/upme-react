@@ -23,10 +23,8 @@ export const SocialGoogleLogin = observer(() => {
   const responseGoogleSuccess = async (response: any) => {
     const { token } = await store.loginByGoogle(response.profileObj);
     handleOnClose();
-
-    userStore.setToken(token);
-    await userStore.fetch();
-    await profileStore.fetch();
+    localStorage.setItem('token', token);
+    await Promise.all([userStore.fetch(), profileStore.fetch()]);
 
     if (location.pathname !== '/') {
       return;
